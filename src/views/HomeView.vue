@@ -3,22 +3,14 @@ import { RouterView, RouterLink } from "vue-router";
 import InputSearch from "@/components/InputSearch.vue";
 import ProfileCard from "@/components/ProfileCard.vue";
 import ChatItem from "@/components/ChatItem.vue";
-import { ref, reactive } from "vue";
+import { ref } from "vue";
+import useProfileStore from "@/stores/profile";
+import useChannelsStore from "@/stores/channels";
+
+const profileStore = useProfileStore();
+const channelsStore = useChannelsStore();
 
 const search = ref("");
-const profile = reactive({
-  username: "Diana Nerd",
-  status: "active",
-  avatar: "/avatars/avatar.jpg",
-});
-const channels = reactive([
-  { id: 1, name: "General", messages: 27 },
-  { id: 2, name: "Emergencias", messages: null },
-  { id: 3, name: "Anuncios", messages: 2 },
-  { id: 4, name: "Proyecto 1", messages: 24 },
-  { id: 5, name: "Non-work", messages: null },
-  { id: 6, name: "Atención a clientes", messages: 120 },
-]);
 </script>
 
 <template>
@@ -26,16 +18,16 @@ const channels = reactive([
     <aside>
       <InputSearch v-model="search" />
       <ProfileCard
-        :avatar="profile.avatar"
-        :username="profile.username"
-        :status="profile.status"
+        :avatar="profileStore.avatar"
+        :username="profileStore.username"
+        :status="profileStore.status"
       />
-      <RouterLink to="/" class="channels-title"
-        >Canales <Icon icon="carbon:hashtag"
-      /></RouterLink>
+      <RouterLink to="/" class="channels-title">
+        Canales <Icon icon="carbon:hashtag" />
+      </RouterLink>
       <div class="channels">
         <ChatItem
-          v-for="channel in channels"
+          v-for="channel in channelsStore.getChannels(search)"
           :key="channel.id"
           :id="channel.id"
           :name="channel.name"
