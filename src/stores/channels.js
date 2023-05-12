@@ -15,6 +15,10 @@ export default defineStore("channels", {
     };
   },
   getters: {
+    getChannelNameById: (state) => (id) => {
+      return state.channels.find((channel) => channel.id === id)?.name;
+    },
+
     getChannels: (state) => (search) => {
       const messagesStore = useMessagesStore();
 
