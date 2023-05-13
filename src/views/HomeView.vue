@@ -3,7 +3,7 @@ import { RouterView, RouterLink } from "vue-router";
 import InputSearch from "@/components/InputSearch.vue";
 import ProfileCard from "@/components/ProfileCard.vue";
 import ChatItem from "@/components/ChatItem.vue";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import useProfileStore from "@/stores/profile";
 import useChannelsStore from "@/stores/channels";
 
@@ -11,20 +11,28 @@ const profileStore = useProfileStore();
 const channelsStore = useChannelsStore();
 
 const search = ref("");
+const refSearch = ref("");
+
+onMounted(() => {
+  refSearch.value.focus();
+});
 </script>
 
 <template>
   <div class="home">
     <aside>
-      <InputSearch v-model="search" />
+      <InputSearch v-model="search" ref="refSearch" />
+
       <ProfileCard
         :avatar="profileStore.avatar"
         :username="profileStore.username"
         :status="profileStore.status"
       />
+
       <RouterLink to="/" class="channels-title">
         Canales <Icon icon="carbon:hashtag" />
       </RouterLink>
+
       <div class="channels">
         <ChatItem
           v-for="channel in channelsStore.getChannels(search)"
@@ -35,6 +43,7 @@ const search = ref("");
         />
       </div>
     </aside>
+
     <main>
       <RouterView />
     </main>

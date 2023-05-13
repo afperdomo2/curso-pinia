@@ -1,12 +1,23 @@
 <script setup>
+import { ref } from "vue";
+
 defineProps(["modelValue"]);
 defineEmits(["update:modelValue"]);
+
+const refSearch = ref("");
+
+const focus = () => refSearch.value.focus();
+
+defineExpose({
+  focus,
+});
 </script>
 
 <template>
   <div class="input-search">
     <input
-      type="text"
+      ref="refSearch"
+      type="search"
       placeholder="Buscar"
       :value="modelValue"
       @input="$emit('update:modelValue', $event.target.value)"
