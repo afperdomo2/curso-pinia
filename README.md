@@ -27,3 +27,17 @@ npm run dev
 ```sh
 npm run build
 ```
+
+## Docker
+
+### Build the image
+
+```sh
+docker build -t chatapp-pinia-img .
+```
+
+### Run the container
+
+```sh
+docker run -d -p 3000:8080 --name chatapp-pinia chatapp-pinia-img
+```
